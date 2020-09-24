@@ -1,0 +1,17 @@
+volumes:
+  dados_mongo:
+
+version: '2'
+services:
+  mongo:
+    image: mongo:4.4.1-bionic
+    restart: always
+    volumes:
+      - dados_mongo:/data/db
+      - ./docker/scripts/init.db.js:/docker-entrypoint-initdb.d/init.db.js
+    environment:
+      MONGO_INITDB_DATABASE: marvel
+    ports:
+      - 27017:27017
+  app:
+    image: openjdk:16-jdk-alpine3.12
