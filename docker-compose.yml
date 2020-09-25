@@ -3,6 +3,10 @@ volumes:
 
 version: '2'
 services:
+  redis:
+    image: redis:6.0.8-alpine
+    ports:
+      - 6379:6379
   mongo:
     image: mongo:4.4.1-bionic
     restart: always
@@ -15,3 +19,6 @@ services:
       - 27017:27017
   app:
     image: openjdk:16-jdk-alpine3.12
+    depends_on:
+      - mongo
+      - redis
