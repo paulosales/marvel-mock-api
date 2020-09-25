@@ -1,0 +1,30 @@
+volumes:
+  data_marvel:
+
+version: '2'
+services:
+  api:
+    image: prsales/marvel-mock-api:latest
+    environment:
+      MARVEL_API_DB_HOST: mongo
+      MARVEL_API_DB_PORT: 27017
+      MARVEL_API_DB_NAME: marvel
+      MARVEL_API_REDIS_HOST: redis
+      MARVEL_API_REDIS_PORT: 6379
+    ports:
+      - 8082:80
+    depends_on:
+      - mongo
+      - redis
+
+  redis:
+    image: redis:6.0.8-alpine
+
+  mongo:
+    image: mongo:4.4.1-bionic
+    restart: always
+    volumes:
+      - data_marvel:/data/db
+      - ./scripts/init.db.js:/docker-entrypoint-initdb.d/init.db.js
+    environment:
+      MONGO_INITDB_DATABASE: marvel
