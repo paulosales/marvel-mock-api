@@ -46,7 +46,7 @@ let characters_data = [
       "path": "http://i.annihil.us/u/prod/marvel/i/mg/c/e0/535fecbbb9784",
       "extension": "jpg"
     },
-    "resourceURI": "${character-end-point}/1011334",
+    "resourceURI": "http://marvel.com/character/1011334",
     "urls": [
       {
         "type": "detail",
