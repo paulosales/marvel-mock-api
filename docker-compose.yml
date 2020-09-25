@@ -17,8 +17,3 @@ services:
       MONGO_INITDB_DATABASE: marvel
     ports:
       - 27017:27017
-  app:
-    image: openjdk:16-jdk-alpine3.12
-    depends_on:
-      - mongo
-      - redis
