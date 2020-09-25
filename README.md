@@ -54,10 +54,12 @@ services:
     restart: always
     volumes:
       - data_marvel:/data/db
-      - ./scripts/init.db.js:/docker-entrypoint-initdb.d/init.db.js
+      - ./scripts/init.db.js:/docker-entrypoint-initdb.d/init.db.js #Download the 'init.db.js' file at the link below
     environment:
       MONGO_INITDB_DATABASE: marvel
 ```
+
+The database data initialization script can be downloaded at https://raw.githubusercontent.com/paulosales/marvel-mock-api/master/docker/scripts/init.db.js
 
 ## Usage
 
