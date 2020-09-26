@@ -2,9 +2,12 @@ package com.paulosales.marvel.api.rest.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.util.List;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 @ApiModel(value = "SeriesList")
 public class SeriesListDTO {
 
@@ -28,5 +31,5 @@ public class SeriesListDTO {
   private String collectionURI;
 
   @ApiModelProperty(notes = "The list of returned series in this collection.", position = 4)
-  private SeriesSummaryDTO items;
+  private List<SeriesSummaryDTO> items;
 }

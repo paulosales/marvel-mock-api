@@ -10,7 +10,7 @@ import lombok.Data;
 public class StoryDTO {
 
   @ApiModelProperty(notes = "The unique ID of the story resource.", position = 1)
-  private Long id;
+  private String id;
 
   @ApiModelProperty(notes = "The story title.", position = 2)
   private String title;

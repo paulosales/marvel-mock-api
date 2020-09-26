@@ -59,7 +59,20 @@ services:
       MONGO_INITDB_DATABASE: marvel
 ```
 
-The database data initialization script can be downloaded at https://raw.githubusercontent.com/paulosales/marvel-mock-api/master/docker/scripts/init.db.js
+### Database initialization script
+
+The database data initialization script can be downloaded at [init.db.js](https://raw.githubusercontent.com/paulosales/marvel-mock-api/master/docker/scripts/init.db.js).
+
+### Redis configuration (optional)
+
+Optionally you can config Redis Cache with this configuration file: [redis.conf](https://raw.githubusercontent.com/paulosales/marvel-mock-api/master/docker/config/redis.conf).
+
+Just add the config file into `docker-compose.yml` configuration as a volume:
+
+```yml
+volumes:
+  - ./docker/config/redis.conf:/usr/local/etc/redis/redis.conf
+```
 
 ## Usage
 

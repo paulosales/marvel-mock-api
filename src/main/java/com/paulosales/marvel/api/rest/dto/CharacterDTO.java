@@ -13,8 +13,8 @@ public class CharacterDTO {
   @ApiModelProperty(
       notes = "The unique ID of the character resource.",
       position = 1,
-      example = "1011334")
-  private Long id;
+      example = "5f6e2f447ab01f6a397f2748")
+  private String id;
 
   @ApiModelProperty(notes = "The name of the character.", position = 2, example = "3-D Man")
   private String name;

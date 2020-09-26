@@ -2,13 +2,18 @@ package com.paulosales.marvel.api.rest.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @ApiModel(value = "CharacterDataWrapper")
 public class CharacterDataWrapperDTO {
+
   @ApiModelProperty(
       notes = "The HTTP status code of the returned result.",
       position = 1,

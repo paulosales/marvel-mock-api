@@ -1,22 +1,25 @@
 package com.paulosales.marvel.api.rest.resources;
 
-import com.paulosales.marvel.api.rest.dto.CharacterDTO;
-import com.paulosales.marvel.api.rest.dto.CharacterDataContainerDTO;
+import com.paulosales.marvel.api.converters.Converter;
+import com.paulosales.marvel.api.data.models.Character;
+import com.paulosales.marvel.api.data.models.Comic;
 import com.paulosales.marvel.api.rest.dto.CharacterDataWrapperDTO;
 import com.paulosales.marvel.api.rest.dto.ComicDataWrapperDTO;
 import com.paulosales.marvel.api.rest.dto.EventDataWrapperDTO;
 import com.paulosales.marvel.api.rest.dto.SeriesDataWrapperDTO;
 import com.paulosales.marvel.api.rest.dto.StoryDataWrapperDTO;
 import com.paulosales.marvel.api.service.CharacterService;
+import com.paulosales.marvel.api.service.exception.ServiceException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +33,15 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "character")
 public class CharacterResource {
 
-  @Autowired CharacterService characterService;
+  @Autowired private CharacterService characterService;
+
+  @Autowired
+  @Qualifier("characterListToCharacterDataWrapperDTO")
+  private Converter<List<Character>, CharacterDataWrapperDTO> characterConverter;
+
+  @Autowired
+  @Qualifier("comicListToComicDataWrapperDTO")
+  private Converter<List<Comic>, ComicDataWrapperDTO> comicConverter;
 
   @GetMapping
   @ApiOperation(
@@ -45,26 +56,15 @@ public class CharacterResource {
   })
   public ResponseEntity<CharacterDataWrapperDTO> getCharacters() {
     log.debug("Querying characters");
-
-    ModelMapper mapper = new ModelMapper();
-
-    List<CharacterDTO> characters =
-        characterService.getCharacters().stream()
-            .map(character -> mapper.map(character, CharacterDTO.class))
-            .collect(Collectors.toList());
-
-    CharacterDataWrapperDTO response =
-        CharacterDataWrapperDTO.builder()
-            .code(200)
-            .status("Ok")
-            .copyright("© 2020 MARVEL")
-            .attributionText("Data provided by Marvel. © 2020 MARVEL")
-            .attributionHTML(
-                "<a href=\"http://marvel.com\">Data provided by Marvel. © 2020 MARVEL</a>")
-            .data(CharacterDataContainerDTO.builder().results(characters).build())
-            .build();
-
-    return ResponseEntity.ok().body(response);
+    try {
+      CharacterDataWrapperDTO response =
+          characterConverter.convert(characterService.getCharacters());
+      log.debug("Querying characters with success");
+      return ResponseEntity.ok().body(response);
+    } catch (ServiceException e) {
+      log.error(String.format("Querying characters"), e);
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    }
   }
 
   @GetMapping("/{characterId}")
@@ -78,10 +78,19 @@ public class CharacterResource {
         message =
             "Limit greater than 100. | Limit invalid or below 1. | Invalid or unrecognized parameter. | Empty parameter. | Invalid or unrecognized ordering parameter. | Too many values sent to a multi-value list filter. | Invalid value passed to filter.")
   })
-  public ResponseEntity<CharacterDataWrapperDTO> getCharacters(
-      @PathVariable("characterId") Long characterId) {
+  public ResponseEntity<CharacterDataWrapperDTO> getCharacter(
+      @PathVariable("characterId") String characterId) {
     log.debug("Querying character by id {}", characterId);
-    return ResponseEntity.ok().build();
+    try {
+      CharacterDataWrapperDTO response =
+          characterConverter.convert(
+              Arrays.<Character>asList(characterService.getCharacter(characterId)));
+      log.debug("Querying character by id {} with success", characterId);
+      return ResponseEntity.ok().body(response);
+    } catch (ServiceException e) {
+      log.error(String.format("Querying character %s error", characterId), e);
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    }
   }
 
   @GetMapping("/{characterId}/comics")
@@ -96,9 +105,16 @@ public class CharacterResource {
             "Limit greater than 100. | Limit invalid or below 1. | Invalid or unrecognized parameter. | Empty parameter. | Invalid or unrecognized ordering parameter. | Too many values sent to a multi-value list filter. | Invalid value passed to filter.")
   })
   public ResponseEntity<ComicDataWrapperDTO> getComics(
-      @PathVariable("characterId") Long characterId) {
+      @PathVariable("characterId") String characterId) {
+
     log.debug("Getting character {} comics", characterId);
-    return ResponseEntity.ok().build();
+    try {
+      ComicDataWrapperDTO response =
+          comicConverter.convert(characterService.getCharacterComics(characterId));
+      return ResponseEntity.ok().body(response);
+    } catch (ServiceException e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    }
   }
 
   @GetMapping("/{characterId}/events")
@@ -112,7 +128,7 @@ public class CharacterResource {
           message =
               "Limit greater than 100. | Limit invalid or below 1. | Invalid or unrecognized parameter. | Empty parameter. | Invalid or unrecognized ordering parameter. | Too many values sent to a multi-value list filter. | Invalid value passed to filter."))
   public ResponseEntity<EventDataWrapperDTO> getEvents(
-      @PathVariable("characterId") Long characterId) {
+      @PathVariable("characterId") String characterId) {
     log.debug("Getting character {} events", characterId);
     return ResponseEntity.ok().build();
   }
@@ -128,7 +144,7 @@ public class CharacterResource {
           message =
               "Limit greater than 100. | Limit invalid or below 1. | Invalid or unrecognized parameter. | Empty parameter. | Invalid or unrecognized ordering parameter. | Too many values sent to a multi-value list filter. | Invalid value passed to filter."))
   public ResponseEntity<SeriesDataWrapperDTO> getSeries(
-      @PathVariable("characterId") Long characterId) {
+      @PathVariable("characterId") String characterId) {
     log.debug("Getting character {} series", characterId);
     return ResponseEntity.ok().build();
   }
@@ -144,7 +160,7 @@ public class CharacterResource {
           message =
               "Limit greater than 100. | Limit invalid or below 1. | Invalid or unrecognized parameter. | Empty parameter. | Invalid or unrecognized ordering parameter. | Too many values sent to a multi-value list filter. | Invalid value passed to filter."))
   public ResponseEntity<StoryDataWrapperDTO> getStories(
-      @PathVariable("characterId") Long characterId) {
+      @PathVariable("characterId") String characterId) {
     log.debug("Getting character {} stories", characterId);
     return ResponseEntity.ok().build();
   }

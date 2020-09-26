@@ -11,7 +11,7 @@ import lombok.Data;
 public class SeriesDTO {
 
   @ApiModelProperty(notes = "The unique ID of the series resource.", position = 1)
-  private Long id;
+  private String id;
 
   @ApiModelProperty(notes = "The canonical title of the series.", position = 2)
   private String title;

@@ -11,7 +11,7 @@ import lombok.Data;
 public class EventDTO {
 
   @ApiModelProperty(notes = "The unique ID of the event resource.", position = 1)
-  private Integer id;
+  private String id;
 
   @ApiModelProperty(notes = "The title of the event.", position = 2)
   private String title;

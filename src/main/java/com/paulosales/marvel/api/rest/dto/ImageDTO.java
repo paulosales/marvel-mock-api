@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 @ApiModel(value = "Image")
 public class ImageDTO {
+
   @ApiModelProperty(
       notes = "The directory path of to the image.",
       position = 1,

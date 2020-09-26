@@ -10,8 +10,11 @@ import lombok.Data;
 @ApiModel("Commic")
 public class ComicDTO {
 
-  @ApiModelProperty(notes = "The unique ID of the comic resource.", position = 1, example = "22506")
-  private Long id;
+  @ApiModelProperty(
+      notes = "The unique ID of the comic resource.",
+      position = 1,
+      example = "5f6e2f447ab01f6a397f2748")
+  private String id;
 
   @ApiModelProperty(
       notes =
