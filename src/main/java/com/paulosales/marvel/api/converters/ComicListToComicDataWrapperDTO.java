@@ -1,16 +1,15 @@
 package com.paulosales.marvel.api.converters;
 
+import com.paulosales.marvel.api.data.models.CharacterSummary;
 import com.paulosales.marvel.api.data.models.Comic;
-import com.paulosales.marvel.api.data.models.ComicSummary;
 import com.paulosales.marvel.api.data.models.EventSummary;
-import com.paulosales.marvel.api.data.models.SeriesSummary;
 import com.paulosales.marvel.api.data.models.StorySummary;
+import com.paulosales.marvel.api.rest.dto.CharacterListDTO;
 import com.paulosales.marvel.api.rest.dto.ComicDTO;
 import com.paulosales.marvel.api.rest.dto.ComicDataContainerDTO;
 import com.paulosales.marvel.api.rest.dto.ComicDataWrapperDTO;
-import com.paulosales.marvel.api.rest.dto.ComicListDTO;
 import com.paulosales.marvel.api.rest.dto.EventListDTO;
-import com.paulosales.marvel.api.rest.dto.SeriesListDTO;
+import com.paulosales.marvel.api.rest.dto.SeriesSummaryDTO;
 import com.paulosales.marvel.api.rest.dto.StoryListDTO;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,16 +23,12 @@ import org.springframework.stereotype.Component;
 public class ComicListToComicDataWrapperDTO implements Converter<List<Comic>, ComicDataWrapperDTO> {
 
   @Autowired
-  @Qualifier("comicSumaryListToComicListDTO")
-  private Converter<List<ComicSummary>, ComicListDTO> comicsConverter;
+  @Qualifier("characterSumaryListToCharacterListDTO")
+  private Converter<List<CharacterSummary>, CharacterListDTO> characterConverter;
 
   @Autowired
   @Qualifier("storySumaryListToComicListDTO")
   private Converter<List<StorySummary>, StoryListDTO> storyConverter;
-
-  @Autowired
-  @Qualifier("serieSumaryListToSerieListDTO")
-  private Converter<List<SeriesSummary>, SeriesListDTO> serieConverter;
 
   @Autowired
   @Qualifier("eventSumaryListToEventListDTO")
@@ -52,6 +47,12 @@ public class ComicListToComicDataWrapperDTO implements Converter<List<Comic>, Co
             .map(
                 comic -> {
                   ComicDTO comicDTO = mapper.map(comic, ComicDTO.class);
+                  comicDTO.setCharacters(characterConverter.convert(comic.getCharacters()));
+                  comicDTO.setStories(storyConverter.convert(comic.getStories()));
+                  comicDTO.setEvents(eventConverter.convert(comic.getEvents()));
+                  if (comic.getSeries() != null) {
+                    comicDTO.setSeries(mapper.map(comic.getSeries(), SeriesSummaryDTO.class));
+                  }
                   return comicDTO;
                 })
             .collect(Collectors.toList());
