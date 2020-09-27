@@ -9,6 +9,8 @@ import com.paulosales.marvel.api.data.models.Story;
 import com.paulosales.marvel.api.rest.dto.CharacterDTO;
 import com.paulosales.marvel.api.rest.dto.CharacterDataContainerDTO;
 import com.paulosales.marvel.api.rest.dto.CharacterDataWrapperDTO;
+import com.paulosales.marvel.api.rest.dto.ComicDTO;
+import com.paulosales.marvel.api.rest.dto.ComicDataContainerDTO;
 import com.paulosales.marvel.api.rest.dto.ComicDataWrapperDTO;
 import com.paulosales.marvel.api.rest.dto.EventDataWrapperDTO;
 import com.paulosales.marvel.api.rest.dto.SeriesDataWrapperDTO;
@@ -130,15 +132,45 @@ public class CharacterResourceTest {
   }
 
   @Test
-  public void testGetCharacterComics() {
+  public void testGetCharacterComicsWithSuccess() throws ServiceException {
 
-    ResponseEntity<ComicDataWrapperDTO> response = characterResource.getComics("132132");
+    List<Comic> comics = new ArrayList<>();
+    comics.add(Comic.builder().id("123456").build());
+    Mockito.when(characterService.getCharacterComics("123456")).thenReturn(comics);
+
+    List<ComicDTO> comicsDTO = new ArrayList<>();
+    comicsDTO.add(ComicDTO.builder().id("123456").build());
+
+    Mockito.when(comicConverter.convert(comics))
+        .thenReturn(
+            ComicDataWrapperDTO.builder()
+                .status("200")
+                .data(ComicDataContainerDTO.builder().results(comicsDTO).build())
+                .build());
+
+    ResponseEntity<ComicDataWrapperDTO> response = characterResource.getComics("123456");
 
     Assertions.assertNotNull(response);
+    Assertions.assertEquals(200, response.getStatusCodeValue());
+    Assertions.assertNotNull(response.getBody());
   }
 
   @Test
-  public void testGetCharacterEvents() {
+  public void testGetCharacterComicsWithFailure() throws ServiceException {
+
+    Mockito.doThrow(new ServiceException("Service layer error", null))
+        .when(characterService)
+        .getCharacterComics(Mockito.anyString());
+
+    ResponseEntity<ComicDataWrapperDTO> response = characterResource.getComics("123456");
+
+    Assertions.assertNotNull(response);
+    Assertions.assertEquals(500, response.getStatusCodeValue());
+    Assertions.assertNull(response.getBody());
+  }
+
+  @Test
+  public void testGetCharacterEventsWithSuccess() {
 
     ResponseEntity<EventDataWrapperDTO> response = characterResource.getEvents("132132");
 
@@ -146,7 +178,21 @@ public class CharacterResourceTest {
   }
 
   @Test
-  public void testGetCharacterSeries() {
+  public void testGetCharacterEventsWithFailure() throws ServiceException {
+
+    Mockito.doThrow(new ServiceException("Service layer error", null))
+        .when(characterService)
+        .getCharacterEvents(Mockito.anyString());
+
+    ResponseEntity<EventDataWrapperDTO> response = characterResource.getEvents("123456");
+
+    Assertions.assertNotNull(response);
+    Assertions.assertEquals(500, response.getStatusCodeValue());
+    Assertions.assertNull(response.getBody());
+  }
+
+  @Test
+  public void testGetCharacterSeriesWithSuccess() {
 
     ResponseEntity<SeriesDataWrapperDTO> response = characterResource.getSeries("132132");
 
@@ -154,10 +200,38 @@ public class CharacterResourceTest {
   }
 
   @Test
-  public void testGetCharacterStories() {
+  public void testGetCharacterSeriesWithFailure() throws ServiceException {
+
+    Mockito.doThrow(new ServiceException("Service layer error", null))
+        .when(characterService)
+        .getCharacterSeries(Mockito.anyString());
+
+    ResponseEntity<SeriesDataWrapperDTO> response = characterResource.getSeries("123456");
+
+    Assertions.assertNotNull(response);
+    Assertions.assertEquals(500, response.getStatusCodeValue());
+    Assertions.assertNull(response.getBody());
+  }
+
+  @Test
+  public void testGetCharacterStoriesWithSuccess() {
 
     ResponseEntity<StoryDataWrapperDTO> response = characterResource.getStories("132132");
 
     Assertions.assertNotNull(response);
+  }
+
+  @Test
+  public void testGetCharacterStoriesWithFailure() throws ServiceException {
+
+    Mockito.doThrow(new ServiceException("Service layer error", null))
+        .when(characterService)
+        .getCharacterStories(Mockito.anyString());
+
+    ResponseEntity<StoryDataWrapperDTO> response = characterResource.getStories("123456");
+
+    Assertions.assertNotNull(response);
+    Assertions.assertEquals(500, response.getStatusCodeValue());
+    Assertions.assertNull(response.getBody());
   }
 }
