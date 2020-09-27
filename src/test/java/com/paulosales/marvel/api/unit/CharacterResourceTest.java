@@ -46,4 +46,44 @@ public class CharacterResourceTest {
 
     Assertions.assertNotNull(response);
   }
+
+  @Test
+  public void testGetCharacter() {
+
+    ResponseEntity<CharacterDataWrapperDTO> response = characterResource.getCharacter("132132");
+
+    Assertions.assertNotNull(response);
+  }
+
+  @Test
+  public void testGetCharacterComics() {
+
+    ResponseEntity<ComicDataWrapperDTO> response = characterResource.getComics("132132");
+
+    Assertions.assertNotNull(response);
+  }
+
+  @Test
+  public void testGetCharacterEvents() {
+
+    ResponseEntity<EventDataWrapperDTO> response = characterResource.getEvents("132132");
+
+    Assertions.assertNotNull(response);
+  }
+
+  @Test
+  public void testGetCharacterSeries() {
+
+    ResponseEntity<SeriesDataWrapperDTO> response = characterResource.getSeries("132132");
+
+    Assertions.assertNotNull(response);
+  }
+
+  @Test
+  public void testGetCharacterStories() {
+
+    ResponseEntity<StoryDataWrapperDTO> response = characterResource.getStories("132132");
+
+    Assertions.assertNotNull(response);
+  }
 }
