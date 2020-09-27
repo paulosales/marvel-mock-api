@@ -1,4 +1,4 @@
-# marvel-mock-api - [![Build Status](https://travis-ci.com/paulosales/marvel-mock-api.svg?branch=master)](https://travis-ci.com/paulosales/marvel-mock-api) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=paulosales_marvel-mock-api&metric=alert_status)](https://sonarcloud.io/dashboard?id=paulosales_marvel-mock-api) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=paulosales_marvel-mock-api&metric=coverage)](https://sonarcloud.io/dashboard?id=paulosales_marvel-mock-api) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=paulosales_marvel-mock-api&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=paulosales_marvel-mock-api)
+# marvel-mock-api - [![Build Status](https://travis-ci.com/paulosales/marvel-mock-api.svg?branch=master)](https://travis-ci.com/paulosales/marvel-mock-api) 
 
 > A Marvel mocking API
 
