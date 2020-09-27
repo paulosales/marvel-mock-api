@@ -1,4 +1,4 @@
-# marvel-mock-api
+# marvel-mock-api - [![Build Status](https://travis-ci.com/paulosales/marvel-mock-api.svg?branch=master)](https://travis-ci.com/paulosales/marvel-mock-api)
 
 > A Marvel mocking API
 
