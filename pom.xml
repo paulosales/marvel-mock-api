@@ -114,6 +114,7 @@
 						<exclude>**/marvel/api/data/models/*</exclude>
 						<exclude>**/marvel/api/rest/dto/*</exclude>
 						<exclude>**/marvel/api/config/*</exclude>
+						<exclude>**/marvel/api/MarvelApiApplication*</exclude>
 					</excludes>
 				</configuration>
 				<executions>
