@@ -25,4 +25,11 @@ public class ComicSummaryConverterTest {
 
     Assertions.assertNotNull(converted);
   }
+
+  @Test
+  public void testConvertNullObject() {
+    ComicListDTO converted = converter.convert(null);
+
+    Assertions.assertNull(converted);
+  }
 }

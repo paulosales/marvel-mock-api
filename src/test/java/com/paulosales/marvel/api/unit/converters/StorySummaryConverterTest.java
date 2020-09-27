@@ -25,4 +25,11 @@ public class StorySummaryConverterTest {
 
     Assertions.assertNotNull(converted);
   }
+
+  @Test
+  public void testConvertNullObject() {
+    StoryListDTO converted = converter.convert(null);
+
+    Assertions.assertNull(converted);
+  }
 }

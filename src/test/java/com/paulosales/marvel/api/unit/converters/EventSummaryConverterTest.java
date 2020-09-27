@@ -25,4 +25,11 @@ public class EventSummaryConverterTest {
 
     Assertions.assertNotNull(converted);
   }
+
+  @Test
+  public void testConvertNullObject() {
+    EventListDTO converted = converter.convert(null);
+
+    Assertions.assertNull(converted);
+  }
 }

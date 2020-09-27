@@ -25,4 +25,11 @@ public class SeriesSummaryConverterTest {
 
     Assertions.assertNotNull(converted);
   }
+
+  @Test
+  public void testConvertNullObject() {
+    SeriesListDTO converted = converter.convert(null);
+
+    Assertions.assertNull(converted);
+  }
 }
