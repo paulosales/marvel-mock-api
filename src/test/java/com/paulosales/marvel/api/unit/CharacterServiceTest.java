@@ -2,9 +2,13 @@ package com.paulosales.marvel.api.unit;
 
 import com.paulosales.marvel.api.data.models.Character;
 import com.paulosales.marvel.api.data.models.Comic;
+import com.paulosales.marvel.api.data.models.ComicSummary;
 import com.paulosales.marvel.api.data.models.Event;
+import com.paulosales.marvel.api.data.models.EventSummary;
 import com.paulosales.marvel.api.data.models.Series;
+import com.paulosales.marvel.api.data.models.SeriesSummary;
 import com.paulosales.marvel.api.data.models.Story;
+import com.paulosales.marvel.api.data.models.StorySummary;
 import com.paulosales.marvel.api.data.repositories.CharacterRepository;
 import com.paulosales.marvel.api.data.repositories.ComicRepository;
 import com.paulosales.marvel.api.data.repositories.EventRepository;
@@ -12,6 +16,7 @@ import com.paulosales.marvel.api.data.repositories.SeriesRepository;
 import com.paulosales.marvel.api.data.repositories.StoryRepository;
 import com.paulosales.marvel.api.service.exception.ServiceException;
 import com.paulosales.marvel.api.service.impl.CharacterServiceImpl;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
@@ -54,32 +59,53 @@ public class CharacterServiceTest {
   @Test
   public void testGetStoriesWithSucess() throws ServiceException {
 
-    List<Story> stories = service.getCharacterStories("123456");
+    List<StorySummary> stories = new ArrayList<>();
+    stories.add(StorySummary.builder().build());
+    Optional<Character> characterOptional =
+        Optional.of(Character.builder().id("123456").stories(stories).build());
+    Mockito.when(characterRepository.findById("123456")).thenReturn(characterOptional);
 
-    Assertions.assertNotNull(stories);
+    List<Story> storiesResult = service.getCharacterStories("123456");
+
+    Assertions.assertNotNull(storiesResult);
   }
 
   @Test
   public void testGetSeriesWithSucess() throws ServiceException {
 
-    List<Series> series = service.getCharacterSeries("123456");
+    List<SeriesSummary> series = new ArrayList<>();
+    series.add(SeriesSummary.builder().build());
+    Optional<Character> characterOptional =
+        Optional.of(Character.builder().id("123456").series(series).build());
+    Mockito.when(characterRepository.findById("123456")).thenReturn(characterOptional);
+    List<Series> seriesResult = service.getCharacterSeries("123456");
 
-    Assertions.assertNotNull(series);
+    Assertions.assertNotNull(seriesResult);
   }
 
   @Test
   public void testGetEventsWithSucess() throws ServiceException {
 
-    List<Event> events = service.getCharacterEvents("123456");
+    List<EventSummary> events = new ArrayList<>();
+    events.add(EventSummary.builder().build());
+    Optional<Character> characterOptional =
+        Optional.of(Character.builder().id("123456").events(events).build());
+    Mockito.when(characterRepository.findById("123456")).thenReturn(characterOptional);
+    List<Event> eventsResult = service.getCharacterEvents("123456");
 
-    Assertions.assertNotNull(events);
+    Assertions.assertNotNull(eventsResult);
   }
 
   @Test
   public void testGetComicsWithSucess() throws ServiceException {
 
-    List<Comic> comics = service.getCharacterComics("123456");
+    List<ComicSummary> comics = new ArrayList<>();
+    comics.add(ComicSummary.builder().build());
+    Optional<Character> characterOptional =
+        Optional.of(Character.builder().id("123456").comics(comics).build());
+    Mockito.when(characterRepository.findById("123456")).thenReturn(characterOptional);
+    List<Comic> comicsResult = service.getCharacterComics("123456");
 
-    Assertions.assertNotNull(comics);
+    Assertions.assertNotNull(comicsResult);
   }
 }
