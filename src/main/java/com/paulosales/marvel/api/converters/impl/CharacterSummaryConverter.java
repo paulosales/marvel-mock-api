@@ -1,5 +1,6 @@
-package com.paulosales.marvel.api.converters;
+package com.paulosales.marvel.api.converters.impl;
 
+import com.paulosales.marvel.api.converters.Converter;
 import com.paulosales.marvel.api.data.models.CharacterSummary;
 import com.paulosales.marvel.api.rest.dto.CharacterListDTO;
 import com.paulosales.marvel.api.rest.dto.CharacterSummaryDTO;
@@ -10,7 +11,7 @@ import org.modelmapper.config.Configuration;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CharacterSumaryListToCharacterListDTO
+public class CharacterSummaryConverter
     implements Converter<List<CharacterSummary>, CharacterListDTO> {
 
   @Override

@@ -1,5 +1,6 @@
-package com.paulosales.marvel.api.converters;
+package com.paulosales.marvel.api.converters.impl;
 
+import com.paulosales.marvel.api.converters.Converter;
 import com.paulosales.marvel.api.data.models.ComicSummary;
 import com.paulosales.marvel.api.rest.dto.ComicListDTO;
 import com.paulosales.marvel.api.rest.dto.ComicSummaryDTO;
@@ -10,7 +11,7 @@ import org.modelmapper.config.Configuration;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ComicSumaryListToComicListDTO implements Converter<List<ComicSummary>, ComicListDTO> {
+public class ComicSummaryConverter implements Converter<List<ComicSummary>, ComicListDTO> {
 
   @Override
   public ComicListDTO convert(List<ComicSummary> comicSummaryList) {

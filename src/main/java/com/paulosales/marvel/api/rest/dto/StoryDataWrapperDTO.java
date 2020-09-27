@@ -2,9 +2,11 @@ package com.paulosales.marvel.api.rest.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 @ApiModel(value = "StoryDataWrapper")
 public class StoryDataWrapperDTO {
   @ApiModelProperty(

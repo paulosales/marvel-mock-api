@@ -1,5 +1,6 @@
-package com.paulosales.marvel.api.converters;
+package com.paulosales.marvel.api.converters.impl;
 
+import com.paulosales.marvel.api.converters.Converter;
 import com.paulosales.marvel.api.data.models.Character;
 import com.paulosales.marvel.api.data.models.ComicSummary;
 import com.paulosales.marvel.api.data.models.EventSummary;
@@ -21,23 +22,23 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CharacterListToCharacterDataWrapperDTO
+public class CharacterDataWrapperConverter
     implements Converter<List<Character>, CharacterDataWrapperDTO> {
 
   @Autowired
-  @Qualifier("comicSumaryListToComicListDTO")
-  private Converter<List<ComicSummary>, ComicListDTO> comicsConverter;
+  @Qualifier("comicSummaryConverter")
+  private Converter<List<ComicSummary>, ComicListDTO> comicConverter;
 
   @Autowired
-  @Qualifier("storySumaryListToComicListDTO")
+  @Qualifier("storySummaryConverter")
   private Converter<List<StorySummary>, StoryListDTO> storyConverter;
 
   @Autowired
-  @Qualifier("serieSumaryListToSerieListDTO")
+  @Qualifier("seriesSummaryConverter")
   private Converter<List<SeriesSummary>, SeriesListDTO> serieConverter;
 
   @Autowired
-  @Qualifier("eventSumaryListToEventListDTO")
+  @Qualifier("eventSummaryConverter")
   private Converter<List<EventSummary>, EventListDTO> eventConverter;
 
   @Override
@@ -53,7 +54,7 @@ public class CharacterListToCharacterDataWrapperDTO
             .map(
                 character -> {
                   CharacterDTO characterDTO = mapper.map(character, CharacterDTO.class);
-                  characterDTO.setComics(comicsConverter.convert(character.getComics()));
+                  characterDTO.setComics(comicConverter.convert(character.getComics()));
                   characterDTO.setStories(storyConverter.convert(character.getStories()));
                   characterDTO.setSeries(serieConverter.convert(character.getSeries()));
                   characterDTO.setEvents(eventConverter.convert(character.getEvents()));

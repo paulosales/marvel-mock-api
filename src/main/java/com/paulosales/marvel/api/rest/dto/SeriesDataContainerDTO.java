@@ -3,9 +3,11 @@ package com.paulosales.marvel.api.rest.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.List;
+import lombok.Builder;
 import lombok.Data;
 
 @ApiModel(value = "SeriesDataContainer")
+@Builder
 @Data
 public class SeriesDataContainerDTO {
   @ApiModelProperty(

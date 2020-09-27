@@ -1,5 +1,6 @@
 package com.paulosales.marvel.api.data.models;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import lombok.Data;
@@ -8,7 +9,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @Document("comics")
-public class Comic {
+public class Comic implements Serializable {
+
+  private static final long serialVersionUID = 3193202076073710428L;
 
   private String id;
 

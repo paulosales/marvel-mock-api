@@ -3,6 +3,9 @@ package com.paulosales.marvel.api.rest.resources;
 import com.paulosales.marvel.api.converters.Converter;
 import com.paulosales.marvel.api.data.models.Character;
 import com.paulosales.marvel.api.data.models.Comic;
+import com.paulosales.marvel.api.data.models.Event;
+import com.paulosales.marvel.api.data.models.Series;
+import com.paulosales.marvel.api.data.models.Story;
 import com.paulosales.marvel.api.rest.dto.CharacterDataWrapperDTO;
 import com.paulosales.marvel.api.rest.dto.ComicDataWrapperDTO;
 import com.paulosales.marvel.api.rest.dto.EventDataWrapperDTO;
@@ -36,12 +39,24 @@ public class CharacterResource {
   @Autowired private CharacterService characterService;
 
   @Autowired
-  @Qualifier("characterListToCharacterDataWrapperDTO")
+  @Qualifier("characterDataWrapperConverter")
   private Converter<List<Character>, CharacterDataWrapperDTO> characterConverter;
 
   @Autowired
-  @Qualifier("comicListToComicDataWrapperDTO")
+  @Qualifier("comicDataWrapperConverter")
   private Converter<List<Comic>, ComicDataWrapperDTO> comicConverter;
+
+  @Autowired
+  @Qualifier("eventDataWrapperConverter")
+  private Converter<List<Event>, EventDataWrapperDTO> eventConverter;
+
+  @Autowired
+  @Qualifier("seriesDataWrapperConverter")
+  private Converter<List<Series>, SeriesDataWrapperDTO> seriesConverter;
+
+  @Autowired
+  @Qualifier("storyDataWrapperConverter")
+  private Converter<List<Story>, StoryDataWrapperDTO> storyConverter;
 
   @GetMapping
   @ApiOperation(
@@ -111,8 +126,10 @@ public class CharacterResource {
     try {
       ComicDataWrapperDTO response =
           comicConverter.convert(characterService.getCharacterComics(characterId));
+      log.debug("Getting character {} comics with success", characterId);
       return ResponseEntity.ok().body(response);
     } catch (ServiceException e) {
+      log.error(String.format("Getting character %s comics error", characterId), e);
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }
   }
@@ -130,7 +147,15 @@ public class CharacterResource {
   public ResponseEntity<EventDataWrapperDTO> getEvents(
       @PathVariable("characterId") String characterId) {
     log.debug("Getting character {} events", characterId);
-    return ResponseEntity.ok().build();
+    try {
+      EventDataWrapperDTO response =
+          eventConverter.convert(characterService.getCharacterEvents(characterId));
+      log.debug("Getting character {} events with success", characterId);
+      return ResponseEntity.ok().body(response);
+    } catch (ServiceException e) {
+      log.error(String.format("Getting character %s events error", characterId), e);
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    }
   }
 
   @GetMapping("/{characterId}/series")
@@ -146,7 +171,15 @@ public class CharacterResource {
   public ResponseEntity<SeriesDataWrapperDTO> getSeries(
       @PathVariable("characterId") String characterId) {
     log.debug("Getting character {} series", characterId);
-    return ResponseEntity.ok().build();
+    try {
+      SeriesDataWrapperDTO response =
+          seriesConverter.convert(characterService.getCharacterSeries(characterId));
+      log.debug("Getting character {} series with success", characterId);
+      return ResponseEntity.ok().body(response);
+    } catch (ServiceException e) {
+      log.error(String.format("Getting character %s series error", characterId), e);
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    }
   }
 
   @GetMapping("/{characterId}/stories")
@@ -162,6 +195,14 @@ public class CharacterResource {
   public ResponseEntity<StoryDataWrapperDTO> getStories(
       @PathVariable("characterId") String characterId) {
     log.debug("Getting character {} stories", characterId);
-    return ResponseEntity.ok().build();
+    try {
+      StoryDataWrapperDTO response =
+          storyConverter.convert(characterService.getCharacterStories(characterId));
+      log.debug("Getting character {} stories with success", characterId);
+      return ResponseEntity.ok().body(response);
+    } catch (ServiceException e) {
+      log.error(String.format("Getting character %s stories error", characterId), e);
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    }
   }
 }

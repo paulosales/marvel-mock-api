@@ -1,5 +1,6 @@
-package com.paulosales.marvel.api.converters;
+package com.paulosales.marvel.api.converters.impl;
 
+import com.paulosales.marvel.api.converters.Converter;
 import com.paulosales.marvel.api.data.models.EventSummary;
 import com.paulosales.marvel.api.rest.dto.EventListDTO;
 import com.paulosales.marvel.api.rest.dto.EventSummaryDTO;
@@ -10,7 +11,7 @@ import org.modelmapper.config.Configuration;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EventSumaryListToEventListDTO implements Converter<List<EventSummary>, EventListDTO> {
+public class EventSummaryConverter implements Converter<List<EventSummary>, EventListDTO> {
 
   @Override
   public EventListDTO convert(List<EventSummary> eventSummaryList) {

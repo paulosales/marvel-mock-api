@@ -1,5 +1,6 @@
-package com.paulosales.marvel.api.converters;
+package com.paulosales.marvel.api.converters.impl;
 
+import com.paulosales.marvel.api.converters.Converter;
 import com.paulosales.marvel.api.data.models.CharacterSummary;
 import com.paulosales.marvel.api.data.models.Comic;
 import com.paulosales.marvel.api.data.models.EventSummary;
@@ -20,18 +21,18 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ComicListToComicDataWrapperDTO implements Converter<List<Comic>, ComicDataWrapperDTO> {
+public class ComicDataWrapperConverter implements Converter<List<Comic>, ComicDataWrapperDTO> {
 
   @Autowired
-  @Qualifier("characterSumaryListToCharacterListDTO")
+  @Qualifier("characterSummaryConverter")
   private Converter<List<CharacterSummary>, CharacterListDTO> characterConverter;
 
   @Autowired
-  @Qualifier("storySumaryListToComicListDTO")
+  @Qualifier("storySummaryConverter")
   private Converter<List<StorySummary>, StoryListDTO> storyConverter;
 
   @Autowired
-  @Qualifier("eventSumaryListToEventListDTO")
+  @Qualifier("eventSummaryConverter")
   private Converter<List<EventSummary>, EventListDTO> eventConverter;
 
   @Override
