@@ -57,6 +57,13 @@ public class CharacterServiceTest {
   }
 
   @Test
+  public void testGetCharacterwithNullId() throws ServiceException {
+
+    Character character = service.getCharacter(null);
+    Assertions.assertNull(character);
+  }
+
+  @Test
   public void testGetStoriesWithSucess() throws ServiceException {
 
     List<StorySummary> stories = new ArrayList<>();
@@ -68,6 +75,26 @@ public class CharacterServiceTest {
     List<Story> storiesResult = service.getCharacterStories("123456");
 
     Assertions.assertNotNull(storiesResult);
+  }
+
+  @Test
+  public void testGetStoriesWithNullId() throws ServiceException {
+
+    List<Story> storiesResult = service.getCharacterStories(null);
+    Assertions.assertNotNull(storiesResult);
+    Assertions.assertTrue(storiesResult.isEmpty());
+  }
+
+  @Test
+  public void testGetStoriesWithNoExistentCharacter() throws ServiceException {
+
+    Optional<Character> characterOptional = Optional.empty();
+    Mockito.when(characterRepository.findById("123456")).thenReturn(characterOptional);
+
+    List<Story> storiesResult = service.getCharacterStories("123456");
+
+    Assertions.assertNotNull(storiesResult);
+    Assertions.assertTrue(storiesResult.isEmpty());
   }
 
   @Test
@@ -84,6 +111,26 @@ public class CharacterServiceTest {
   }
 
   @Test
+  public void testGetSeriesWithNullId() throws ServiceException {
+
+    List<Series> seriesResult = service.getCharacterSeries(null);
+    Assertions.assertNotNull(seriesResult);
+    Assertions.assertTrue(seriesResult.isEmpty());
+  }
+
+  @Test
+  public void testGetSeriesWithNoExistentCharacter() throws ServiceException {
+
+    Optional<Character> characterOptional = Optional.empty();
+    Mockito.when(characterRepository.findById("123456")).thenReturn(characterOptional);
+
+    List<Series> seriesResult = service.getCharacterSeries("123456");
+
+    Assertions.assertNotNull(seriesResult);
+    Assertions.assertTrue(seriesResult.isEmpty());
+  }
+
+  @Test
   public void testGetEventsWithSucess() throws ServiceException {
 
     List<EventSummary> events = new ArrayList<>();
@@ -97,6 +144,26 @@ public class CharacterServiceTest {
   }
 
   @Test
+  public void testGetEventsWithNullId() throws ServiceException {
+
+    List<Event> eventsResult = service.getCharacterEvents(null);
+    Assertions.assertNotNull(eventsResult);
+    Assertions.assertTrue(eventsResult.isEmpty());
+  }
+
+  @Test
+  public void testGetEventsWithNoExistentCharacter() throws ServiceException {
+
+    Optional<Character> characterOptional = Optional.empty();
+    Mockito.when(characterRepository.findById("123456")).thenReturn(characterOptional);
+
+    List<Event> eventsResult = service.getCharacterEvents("123456");
+
+    Assertions.assertNotNull(eventsResult);
+    Assertions.assertTrue(eventsResult.isEmpty());
+  }
+
+  @Test
   public void testGetComicsWithSucess() throws ServiceException {
 
     List<ComicSummary> comics = new ArrayList<>();
@@ -107,5 +174,25 @@ public class CharacterServiceTest {
     List<Comic> comicsResult = service.getCharacterComics("123456");
 
     Assertions.assertNotNull(comicsResult);
+  }
+
+  @Test
+  public void testGetComicsWithNullId() throws ServiceException {
+    List<Comic> comicsResult = service.getCharacterComics(null);
+
+    Assertions.assertNotNull(comicsResult);
+    Assertions.assertTrue(comicsResult.isEmpty());
+  }
+
+  @Test
+  public void testGetComicsWithNoExistentCharacter() throws ServiceException {
+
+    Optional<Character> characterOptional = Optional.empty();
+    Mockito.when(characterRepository.findById("123456")).thenReturn(characterOptional);
+
+    List<Comic> comicsResult = service.getCharacterComics("123456");
+
+    Assertions.assertNotNull(comicsResult);
+    Assertions.assertTrue(comicsResult.isEmpty());
   }
 }
