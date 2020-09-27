@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document("characters")
 public class Character implements Serializable {
 
-  private static final long serialVersionUID = -7706307953753229438l;
+  private static final long serialVersionUID = -7706307953753229438L;
 
   @Id private String id;
 
