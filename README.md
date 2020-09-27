@@ -77,3 +77,7 @@ volumes:
 ## Usage
 
 The API swagger-ui documentation can be founded at http://localhost:8082/v1/swagger-ui.html/
+
+## CI pipeline
+
+The API docker image will be pushed to the Docker hub automatically every time you send commits to the master branch.
