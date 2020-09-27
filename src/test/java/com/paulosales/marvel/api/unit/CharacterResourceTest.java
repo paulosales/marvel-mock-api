@@ -17,6 +17,7 @@ import com.paulosales.marvel.api.rest.resources.CharacterResource;
 import com.paulosales.marvel.api.service.CharacterService;
 import com.paulosales.marvel.api.service.exception.ServiceException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -88,11 +89,44 @@ public class CharacterResourceTest {
   }
 
   @Test
-  public void testGetCharacter() {
+  public void testGetCharacterWithSuccess() throws ServiceException {
 
-    ResponseEntity<CharacterDataWrapperDTO> response = characterResource.getCharacter("132132");
+    Character character = Character.builder().id("123456").build();
+    Mockito.when(characterService.getCharacter("123456")).thenReturn(character);
+
+    List<CharacterDTO> charactersDTO = new ArrayList<>();
+    charactersDTO.add(CharacterDTO.builder().id("123456").build());
+
+    Mockito.when(characterConverter.convert(Arrays.asList(character)))
+        .thenReturn(
+            CharacterDataWrapperDTO.builder()
+                .status("200")
+                .data(CharacterDataContainerDTO.builder().results(charactersDTO).build())
+                .build());
+
+    ResponseEntity<CharacterDataWrapperDTO> response = characterResource.getCharacter("123456");
 
     Assertions.assertNotNull(response);
+    Assertions.assertEquals(200, response.getStatusCodeValue());
+    Assertions.assertNotNull(response.getBody());
+    Assertions.assertNotNull(response.getBody().getData());
+    Assertions.assertNotNull(response.getBody().getData().getResults());
+    Assertions.assertEquals(1, response.getBody().getData().getResults().size());
+    Assertions.assertEquals("123456", response.getBody().getData().getResults().get(0).getId());
+  }
+
+  @Test
+  public void testGetCharacterWithServiceException() throws ServiceException {
+
+    Mockito.doThrow(new ServiceException("Service layer error", null))
+        .when(characterService)
+        .getCharacter(Mockito.anyString());
+
+    ResponseEntity<CharacterDataWrapperDTO> response = characterResource.getCharacter("123456");
+
+    Assertions.assertNotNull(response);
+    Assertions.assertEquals(500, response.getStatusCodeValue());
+    Assertions.assertNull(response.getBody());
   }
 
   @Test
