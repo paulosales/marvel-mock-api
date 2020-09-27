@@ -4,5 +4,15 @@ jdk:
   - oraclejdk11
   - openjdk11
 
+jobs:
+  include:
+    - stage: build docker image
+      script:
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - docker build -t marvel-mock-api .
+      - docker images
+      - docker tag marvel-mock-api $DOCKER_USERNAME/marvel-mock-api:latest
+      - docker push $DOCKER_USERNAME/marvel-mock-api:latest
+
 after_success:
   - bash <(curl -s https://codecov.io/bash)
