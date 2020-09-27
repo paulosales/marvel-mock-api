@@ -3,3 +3,13 @@ language: java
 jdk:
   - oraclejdk11
   - openjdk11
+
+addons:
+  sonarcloud:
+    organization: "paulosales"
+    token:
+      secure: "fUtjhja2zmEVV/NdvxydJuHpFRHyxKWqzTuKDeyjwYNf61yWwh36UnUTupYnSQdWck+qf2/Nus9ctw2B20SbvkAxcrnzxU7mPoHENMG2AJBw4yyEtwhCDf36LGQYICCAeUB/bUqwJK4Fk6vvGoyTGTJHNdsD40b6osnvvSkYT7L9+Cwm4SjiF8iTTKOKuGdIKN1/tS3I4ER3MZmO6PkFS7lPHV9C0wNmHwnlK2fTlGegG2YskWDQMC7ALvCJruAFPq2vR0/N9gwnzVNyqWsuo06sHLBJvCj9i8wiuf4D8RJPLLk64bGe/9/bYR0GNOO6MYg+dL2/42U3SOTTb2oac2dWZNBrKlim/rb77/XKeTnRizSF7CWDGo0rzBe6AlCdSeeddhHL2ZB2Io7Q507mp++NgGk7dKW0suMnlZ0p1SaLNEwqi7EWBJHS+FHRU9FhwepWtH+UZba3MjY39/ZFgTAQAJ7tbFzfKyq5WhA94uze36ABEoyCUujoFKN8uqWq2tScJDTAzahRCEZwd4kR/EP0V7+W7DC8T1tKJ2bBXAzYYoVF2MyfjqjwIy8HVysmZyEFnUV01LDcJyIGkf1sQE9jkg8j2IKKmjX+vZqBOOfx8dWDKbnYSi0eyO3yWzr9QzPH6+r9RcKAfJDwhhURDG+tw1A2xbYS6rp1I6kljyk="
+
+script:
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=paulosales_marvel-mock-api
