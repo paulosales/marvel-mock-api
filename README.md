@@ -77,4 +77,3 @@ volumes:
 ## Usage
 
 The API swagger-ui documentation can be founded at http://localhost:8082/v1/swagger-ui.html/
-
